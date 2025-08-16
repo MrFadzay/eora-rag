@@ -1,0 +1,33 @@
+# Игнорируем файлы с секретами
+.env
+.env.local
+.env.example
+
+# Игнорируем разработческие файлы
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Игнорируем системные файлы
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Игнорируем Git
+.git/
+.gitignore
+
+# Игнорируем документацию разработки
+README.md
+docs/
+
+# Игнорируем логи
+*.log
+logs/
