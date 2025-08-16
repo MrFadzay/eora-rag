@@ -19,10 +19,10 @@ COPY data/chroma_db/ ./data/chroma_db/
 
 RUN mkdir -p data/chroma_db
 
-EXPOSE 5000
+EXPOSE 8000
 
 ENV FLASK_ENV=production
 ENV FLASK_DEBUG=False
 ENV PYTHONPATH=/app
 
-CMD ["python", "src/app.py"]
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--workers", "4", "src.wsgi:application"]
