@@ -38,6 +38,7 @@ jobs:
   deploy:
     needs: build
     runs-on: ubuntu-latest
+    environment: eora-rag.ddns.net
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     
     steps:
@@ -50,7 +51,11 @@ jobs:
         script: |
           cd /home/${{ secrets.SERVER_USER }}/eora-rag || exit 1
           export DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }}
+          export GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY }}
           docker compose -f docker-compose.prod.yml pull || exit 1
           docker compose -f docker-compose.prod.yml down
+          echo "--- Запуск скрипта для заполнения базы данных ---"
+          docker compose -f docker-compose.prod.yml run --rm app python src/seed_database.py || exit 1
+          echo "--- Скрипт заполнения базы данных завершен ---"
           docker compose -f docker-compose.prod.yml up -d || exit 1
           docker system prune -f

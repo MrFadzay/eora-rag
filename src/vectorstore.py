@@ -22,19 +22,6 @@ class EoraVectorStore:
             name=collection_name,
             metadata={"description": "EORA cases embeddings"}
         )
-        
-        # Автоматическая загрузка данных при первом запуске
-        if self.collection.count() == 0:
-            print("База данных пустая, загружаем данные...")
-            try:
-                self.add_cases('/app/data/parsed_cases.json')
-            except Exception as e:
-                print(f"Ошибка при загрузке данных: {e}")
-                # Пробуем тестовые данные как fallback
-                try:
-                    self.add_cases('/app/data/test_cases.json')
-                except Exception as e2:
-                    print(f"Ошибка при загрузке тестовых данных: {e2}")
 
     def reset_collection(self):
         """Очищает коллекцию для переиндексации"""
