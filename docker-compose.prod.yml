@@ -14,4 +14,4 @@ services:
       - FLASK_DEBUG=False
       - GEMINI_API_KEY=${GEMINI_API_KEY}
     volumes:
-      - ./data:/app/data
+      - ./chroma_db:/app/data/chroma_db

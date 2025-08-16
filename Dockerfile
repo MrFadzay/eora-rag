@@ -14,8 +14,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY src/ ./src/
 COPY static/ ./static/
 COPY templates/ ./templates/
+COPY data/ ./data/
 
-RUN mkdir -p data
+RUN mkdir -p data/chroma_db
 
 EXPOSE 8000
 
