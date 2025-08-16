@@ -15,7 +15,6 @@ COPY src/ ./src/
 COPY static/ ./static/
 COPY templates/ ./templates/
 COPY data/parsed_cases.json ./data/
-COPY data/chroma_db/ ./data/chroma_db/
 
 RUN mkdir -p data/chroma_db
 
