@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EORA AI Assistant</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>🤖 EORA AI Assistant</h1>
+            <p>Задайте вопрос о наших проектах и решениях</p>
+        </header>
+
+        <div class="chat-container">
+            <div class="messages" id="messages">
+                <div class="message bot-message">
+                    <div class="message-content">
+                        <p>Привет! Я ассистент компании EORA. Спрашивайте о наших проектах, технологиях и решениях для бизнеса.</p>
+                        <p><strong>Примеры вопросов:</strong></p>
+                        <ul>
+                            <li>Что вы можете сделать для ритейлеров?</li>
+                            <li>Какие у вас есть решения для HR?</li>
+                            <li>Работали ли вы с компьютерным зрением?</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="input-container">
+                <div class="input-wrapper">
+                    <textarea 
+                        id="questionInput" 
+                        placeholder="Введите ваш вопрос..."
+                        rows="2"
+                    ></textarea>
+                    <button id="sendButton" onclick="sendQuestion()">
+                        <span id="sendText">Отправить</span>
+                        <span id="loadingText" style="display: none;">Думаю...</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="stats" id="stats">
+            <span id="statsText">Загрузка статистики...</span>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/chat.js') }}"></script>
+</body>
+</html>
