@@ -3,7 +3,6 @@ Flask веб-приложение для EORA RAG системы
 """
 import os
 import logging
-from datetime import datetime
 from flask import Flask, render_template, request, jsonify
 from dotenv import load_dotenv
 from rag_service import EoraRAGService

@@ -48,8 +48,10 @@ jobs:
         username: ${{ secrets.SERVER_USER }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         script: |
-          cd /home/${{ secrets.SERVER_USER }}/eora-rag
+          cd /home/${{ secrets.SERVER_USER }}/eora-rag || exit 1
           git pull origin main
-          docker compose -f docker-compose.prod.yml pull
-          docker compose -f docker-compose.prod.yml up -d
+          export DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }}
+          docker compose -f docker-compose.prod.yml pull || exit 1
+          docker compose -f docker-compose.prod.yml down
+          docker compose -f docker-compose.prod.yml up -d || exit 1
           docker system prune -f
