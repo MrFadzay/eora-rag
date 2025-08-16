@@ -16,7 +16,7 @@ class EoraVectorStore:
         genai.configure(api_key=api_key)
 
         # Настройка ChromaDB
-        self.chroma_client = chromadb.PersistentClient(path="data/chroma_db")
+        self.chroma_client = chromadb.PersistentClient(path="/app/data/chroma_db")
         self.collection_name = collection_name
         self.collection = self.chroma_client.get_or_create_collection(
             name=collection_name,
@@ -27,12 +27,12 @@ class EoraVectorStore:
         if self.collection.count() == 0:
             print("База данных пустая, загружаем данные...")
             try:
-                self.add_cases('data/parsed_cases.json')
+                self.add_cases('/app/data/parsed_cases.json')
             except Exception as e:
                 print(f"Ошибка при загрузке данных: {e}")
                 # Пробуем тестовые данные как fallback
                 try:
-                    self.add_cases('data/test_cases.json')
+                    self.add_cases('/app/data/test_cases.json')
                 except Exception as e2:
                     print(f"Ошибка при загрузке тестовых данных: {e2}")
 
