@@ -14,9 +14,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY src/ ./src/
 COPY static/ ./static/
 COPY templates/ ./templates/
-COPY data/parsed_cases.json ./data/
 
-RUN mkdir -p data/chroma_db
+RUN mkdir -p data
 
 EXPOSE 8000
 

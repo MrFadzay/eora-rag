@@ -25,7 +25,6 @@ env/
 venv/
 
 data/chroma_db/
-data/parsed_cases.json
 
 .DS_Store
 .vscode/
