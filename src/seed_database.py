@@ -4,12 +4,22 @@
     python seed_database.py                    # Загрузка основных данных
     python seed_database.py --test            # Загрузка тестовых данных
     python seed_database.py --reset           # Очистка и переиндексация
+    python seed_database.py --yes             # Автоматическое подтверждение
+                                               # для неинтерактивного режима
 """
 import os
 import sys
 import argparse
 from dotenv import load_dotenv
 from vectorstore import EoraVectorStore
+
+
+def get_data_path():
+    """Возвращает путь к данным, основываясь на переменной окружения или пути по умолчанию."""
+    default_path = os.path.join(
+        os.path.dirname(os.path.dirname(__file__)), 'data'
+    )
+    return os.getenv('DATA_PATH', default_path)
 
 
 def main():
@@ -22,6 +32,8 @@ def main():
                         help='Очистить базу данных перед загрузкой')
     parser.add_argument('--data-file', type=str,
                         help='Путь к файлу с данными (переопределяет --test)')
+    parser.add_argument('--yes', '-y', action='store_true',
+                        help='Автоматически ответить "да" на все запросы')
 
     args = parser.parse_args()
 
@@ -36,12 +48,13 @@ def main():
         sys.exit(1)
 
     # Определяем файл с данными
+    data_dir = get_data_path()
     if args.data_file:
         data_file = args.data_file
     elif args.test:
-        data_file = '/app/data/test_cases.json'
+        data_file = os.path.join(data_dir, 'test_cases.json')
     else:
-        data_file = '/app/data/parsed_cases.json'
+        data_file = os.path.join(data_dir, 'parsed_cases.json')
 
     # Проверяем существование файла
     if not os.path.exists(data_file):
@@ -67,11 +80,14 @@ def main():
 
         # Проверяем, нужна ли загрузка
         if not args.reset and stats_before['total_chunks'] > 0:
-            response = input(f"База данных уже содержит {stats_before['total_chunks']} чанков. "
-                             "Продолжить загрузку? (y/N): ")
-            if response.lower() not in ['y', 'yes', 'да']:
-                print("❌ Загрузка отменена")
-                sys.exit(0)
+            if not args.yes:
+                response = input(f"База данных уже содержит {stats_before['total_chunks']} чанков. "
+                                 "Продолжить загрузку? (y/N): ")
+                if response.lower() not in ['y', 'yes', 'да']:
+                    print("❌ Загрузка отменена")
+                    sys.exit(0)
+            else:
+                print("✅ Флаг --yes установлен. Продолжаем загрузку автоматически.")
 
         # Загружаем данные
         print(f"📥 Загружаем данные из {data_file}...")

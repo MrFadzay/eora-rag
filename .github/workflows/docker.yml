@@ -55,7 +55,7 @@ jobs:
           docker compose -f docker-compose.prod.yml pull || exit 1
           docker compose -f docker-compose.prod.yml down
           echo "--- Запуск скрипта для заполнения базы данных ---"
-          docker compose -f docker-compose.prod.yml run --rm app python src/seed_database.py || exit 1
+          docker compose -f docker-compose.prod.yml run --rm app python src/seed_database.py --yes || exit 1
           echo "--- Скрипт заполнения базы данных завершен ---"
           docker compose -f docker-compose.prod.yml up -d || exit 1
           docker system prune -f

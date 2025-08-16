@@ -23,5 +23,6 @@ EXPOSE 8000
 ENV FLASK_ENV=production
 ENV FLASK_DEBUG=False
 ENV PYTHONPATH=/app
+ENV DATA_PATH=/app/data
 
 CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--workers", "4", "--chdir", "src", "app:app"]

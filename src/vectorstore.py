@@ -9,6 +9,14 @@ import google.generativeai as genai
 import numpy as np
 
 
+def get_data_path():
+    """Возвращает путь к данным, основываясь на переменной окружения или пути по умолчанию."""
+    default_path = os.path.join(
+        os.path.dirname(os.path.dirname(__file__)), 'data'
+    )
+    return os.getenv('DATA_PATH', default_path)
+
+
 class EoraVectorStore:
     def __init__(self, api_key: str, collection_name: str = "eora_cases"):
         """Инициализация векторной БД и Gemini клиента"""
@@ -16,7 +24,9 @@ class EoraVectorStore:
         genai.configure(api_key=api_key)
 
         # Настройка ChromaDB
-        self.chroma_client = chromadb.PersistentClient(path="/app/data/chroma_db")
+        data_path = get_data_path()
+        chroma_db_path = os.path.join(data_path, 'chroma_db')
+        self.chroma_client = chromadb.PersistentClient(path=chroma_db_path)
         self.collection_name = collection_name
         self.collection = self.chroma_client.get_or_create_collection(
             name=collection_name,
@@ -190,14 +200,16 @@ def main():
     # Создаем векторную БД
     vectorstore = EoraVectorStore(api_key)
 
+    data_dir = get_data_path()
+    
     if len(sys.argv) > 1 and sys.argv[1] == '--index':
         # Индексируем тестовые кейсы
-        vectorstore.add_cases('data/test_cases.json')
+        vectorstore.add_cases(os.path.join(data_dir, 'test_cases.json'))
     elif len(sys.argv) > 1 and sys.argv[1] == '--reindex':
         # Переиндексируем с полными данными
         print("Переиндексация с полными данными...")
         vectorstore.reset_collection()
-        vectorstore.add_cases('data/parsed_cases.json')
+        vectorstore.add_cases(os.path.join(data_dir, 'parsed_cases.json'))
     else:
         # Тестируем поиск
         results = vectorstore.search("Что вы можете сделать для ритейлеров?")
