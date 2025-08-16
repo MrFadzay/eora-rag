@@ -50,7 +50,7 @@ jobs:
         script: |
           cd /home/${{ secrets.SERVER_USER }}/eora-rag || exit 1
           export DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }}
-          docker compose -f docker-compose.prod.yml pull || exit 1
-          docker compose -f docker-compose.prod.yml down
-          docker compose -f docker-compose.prod.yml up -d || exit 1
+          docker-compose -f docker-compose.prod.yml pull || exit 1
+          docker-compose -f docker-compose.prod.yml down
+          docker-compose -f docker-compose.prod.yml up -d || exit 1
           docker system prune -f
